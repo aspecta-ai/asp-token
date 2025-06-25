@@ -8,8 +8,9 @@ contract AspToken is OFT {
     constructor(
         address _lzEndpoint,
         address _delegate,
+        address _treasury,
         uint256 _initialSupply
     ) OFT("ASPECTA", "ASP", _lzEndpoint, _delegate) Ownable(_delegate) {
-        _mint(_delegate, _initialSupply);
+        _mint(_treasury, _initialSupply);
     }
 }
