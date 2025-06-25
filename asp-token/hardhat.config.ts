@@ -4,7 +4,7 @@
 // - Duplicate .env.example file and name it .env
 // - Fill in the environment variables
 import 'dotenv/config'
-
+import './tasks'
 import 'hardhat-deploy'
 import 'hardhat-contract-sizer'
 import '@nomiclabs/hardhat-ethers'
@@ -17,16 +17,11 @@ import { EndpointId } from '@layerzerolabs/lz-definitions'
 //
 // If you prefer using a mnemonic, set a MNEMONIC environment variable
 // to a valid mnemonic
-const MNEMONIC = process.env.MNEMONIC
 
 // If you prefer to be authenticated using a private key, set a PRIVATE_KEY environment variable
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 
-const accounts: HttpNetworkAccountsUserConfig | undefined = MNEMONIC
-    ? { mnemonic: MNEMONIC }
-    : PRIVATE_KEY
-      ? [PRIVATE_KEY]
-      : undefined
+const accounts: HttpNetworkAccountsUserConfig | undefined = [PRIVATE_KEY]
 
 if (accounts == null) {
     console.warn(
@@ -52,21 +47,31 @@ const config: HardhatUserConfig = {
         ],
     },
     networks: {
-        'optimism-testnet': {
-            eid: EndpointId.OPTSEP_V2_TESTNET,
-            url: process.env.RPC_URL_OP_SEPOLIA || 'https://optimism-sepolia.gateway.tenderly.co',
+        'bsc-testnet': {
+            eid: EndpointId.BSC_V2_TESTNET,
+            url: 'https://bsc-testnet-rpc.publicnode.com',
             accounts,
         },
-        'avalanche-testnet': {
-            eid: EndpointId.AVALANCHE_V2_TESTNET,
-            url: process.env.RPC_URL_FUJI || 'https://avalanche-fuji.drpc.org',
+        'base-testnet': {
+            eid: EndpointId.BASESEP_V2_TESTNET,
+            url: 'https://base-sepolia.drpc.org',
             accounts,
         },
-        'arbitrum-testnet': {
-            eid: EndpointId.ARBSEP_V2_TESTNET,
-            url: process.env.RPC_URL_ARB_SEPOLIA || 'https://arbitrum-sepolia.gateway.tenderly.co',
-            accounts,
-        },
+        // 'optimism-testnet': {
+        //     eid: EndpointId.OPTSEP_V2_TESTNET,
+        //     url: process.env.RPC_URL_OP_SEPOLIA || 'https://optimism-sepolia.gateway.tenderly.co',
+        //     accounts,
+        // },
+        // 'avalanche-testnet': {
+        //     eid: EndpointId.AVALANCHE_V2_TESTNET,
+        //     url: process.env.RPC_URL_FUJI || 'https://avalanche-fuji.drpc.org',
+        //     accounts,
+        // },
+        // 'arbitrum-testnet': {
+        //     eid: EndpointId.ARBSEP_V2_TESTNET,
+        //     url: process.env.RPC_URL_ARB_SEPOLIA || 'https://arbitrum-sepolia.gateway.tenderly.co',
+        //     accounts,
+        // },
         hardhat: {
             // Need this for testing because TestHelperOz5.sol is exceeding the compiled contract size limit
             allowUnlimitedContractSize: true,

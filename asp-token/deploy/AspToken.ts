@@ -2,7 +2,7 @@ import assert from 'assert'
 
 import { type DeployFunction } from 'hardhat-deploy/types'
 
-const contractName = 'MyOFT'
+const contractName = 'AspToken'
 
 const deploy: DeployFunction = async (hre) => {
     const { getNamedAccounts, deployments } = hre
@@ -32,17 +32,23 @@ const deploy: DeployFunction = async (hre) => {
     //   }
     // }
     const endpointV2Deployment = await hre.deployments.get('EndpointV2')
-
+    // Use a dict to control supply. If hre.network.name is bsc-testnet, initial supply is 1 billion tokens with 18 decimals, if its base-testnet then 100 million tokens with 18 decimals
+    const initialSupplies = {
+        'bsc-testnet': hre.ethers.utils.parseUnits('1000000000', 18), // 1 billion tokens with 18 decimals
+        'base-testnet': hre.ethers.utils.parseUnits('100000000', 18),  // 100 million tokens with 18 decimals
+    }
+    const initialSupply = initialSupplies[hre.network.name]
     const { address } = await deploy(contractName, {
         from: deployer,
         args: [
-            'MyOFT', // name
-            'MOFT', // symbol
             endpointV2Deployment.address, // LayerZero's EndpointV2 address
             deployer, // owner
+            initialSupply, // initial supply
         ],
         log: true,
-        skipIfAlreadyDeployed: false,
+        skipIfAlreadyDeployed: true,
+        deterministicDeployment: true,
+        deterministicSalt: "testsalt"
     })
 
     console.log(`Deployed contract: ${contractName}, network: ${hre.network.name}, address: ${address}`)
