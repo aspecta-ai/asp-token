@@ -9,6 +9,7 @@ describe('MyOFT Test', function () {
     // Constant representing a mock Endpoint ID for testing purposes
     const eidA = 1
     const eidB = 2
+    const initialSupply = ethers.utils.parseEther('1000')
     // Declaration of variables to be used in the test suite
     let MyOFT: ContractFactory
     let EndpointV2Mock: ContractFactory
@@ -30,7 +31,7 @@ describe('MyOFT Test', function () {
         // Fetching the first three signers (accounts) from Hardhat's local Ethereum network
         const signers = await ethers.getSigners()
 
-        ;[ownerA, ownerB, endpointOwner] = signers
+            ;[ownerA, ownerB, endpointOwner] = signers
 
         // The EndpointV2Mock contract comes from @layerzerolabs/test-devtools-evm-hardhat package
         // and its artifacts are connected as external artifacts to this project
@@ -50,8 +51,8 @@ describe('MyOFT Test', function () {
         mockEndpointV2B = await EndpointV2Mock.deploy(eidB)
 
         // Deploying two instances of MyOFT contract with different identifiers and linking them to the mock LZEndpoint
-        myOFTA = await MyOFT.deploy('aOFT', 'aOFT', mockEndpointV2A.address, ownerA.address)
-        myOFTB = await MyOFT.deploy('bOFT', 'bOFT', mockEndpointV2B.address, ownerB.address)
+        myOFTA = await MyOFT.deploy('aOFT', 'aOFT', mockEndpointV2A.address, ownerA.address, ownerA.address, initialSupply)
+        myOFTB = await MyOFT.deploy('bOFT', 'bOFT', mockEndpointV2B.address, ownerB.address, ownerB.address, initialSupply)
 
         // Setting destination endpoints in the LZEndpoint mock for each MyOFT instance
         await mockEndpointV2A.setDestLzEndpoint(myOFTB.address, mockEndpointV2B.address)
@@ -95,7 +96,7 @@ describe('MyOFT Test', function () {
         const finalBalanceB = await myOFTB.balanceOf(ownerB.address)
 
         // Asserting that the final balances are as expected after the send operation
-        expect(finalBalanceA).eql(initialAmount.sub(tokensToSend))
-        expect(finalBalanceB).eql(tokensToSend)
+        expect(finalBalanceA).eql(initialAmount.sub(tokensToSend).add(initialSupply))
+        expect(finalBalanceB).eql(tokensToSend.add(initialSupply))
     })
 })

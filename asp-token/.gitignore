@@ -1,13 +1,15 @@
+.anchor
 node_modules
 .env
 coverage
 coverage.json
+target
 typechain
 typechain-types
 
 # Hardhat files
 cache
-artifacts
+artifacts/*
 
 
 # LayerZero specific files
