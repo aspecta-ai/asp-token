@@ -5,6 +5,8 @@ import { OAppEnforcedOption } from '@layerzerolabs/toolbox-hardhat'
 
 import type { OmniPointHardhat } from '@layerzerolabs/toolbox-hardhat'
 
+import { getOftStoreAddress } from './tasks/solana'
+
 const bscContract: OmniPointHardhat = {
     eid: EndpointId.BSC_V2_MAINNET,
     contractName: 'AspToken',
@@ -20,6 +22,11 @@ const baseContract: OmniPointHardhat = {
     contractName: 'AspToken',
 }
 
+// const solanaContract: OmniPointHardhat = {
+//     eid: EndpointId.SOLANA_V2_TESTNET,
+//     address: getOftStoreAddress(EndpointId.SOLANA_V2_TESTNET),
+// }
+
 // To connect all the above chains to each other, we need the following pathways:
 // Optimism <-> Avalanche
 // Optimism <-> Arbitrum
@@ -34,6 +41,15 @@ const EVM_ENFORCED_OPTIONS: OAppEnforcedOption[] = [
         optionType: ExecutorOptionType.LZ_RECEIVE,
         gas: 60000,
         value: 0,
+    },
+]
+
+const SOLANA_ENFORCED_OPTIONS: OAppEnforcedOption[] = [
+    {
+        msgType: 1,
+        optionType: ExecutorOptionType.LZ_RECEIVE,
+        gas: 200000,
+        value: 2500000,
     },
 ]
 
