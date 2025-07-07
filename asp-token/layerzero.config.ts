@@ -6,17 +6,17 @@ import { OAppEnforcedOption } from '@layerzerolabs/toolbox-hardhat'
 import type { OmniPointHardhat } from '@layerzerolabs/toolbox-hardhat'
 
 const bscContract: OmniPointHardhat = {
-    eid: EndpointId.BSC_V2_TESTNET,
+    eid: EndpointId.BSC_V2_MAINNET,
     contractName: 'AspToken',
 }
 
-// const ethContract: OmniPointHardhat = {
-//     eid: EndpointId.ETHEREUM_V2_MAINNET,
-//     contractName: 'MyOFT',
-// }
+const ethContract: OmniPointHardhat = {
+    eid: EndpointId.ETHEREUM_V2_MAINNET,
+    contractName: 'AspToken',
+}
 
 const baseContract: OmniPointHardhat = {
-    eid: EndpointId.BASESEP_V2_TESTNET,
+    eid: EndpointId.BASE_V2_MAINNET,
     contractName: 'AspToken',
 }
 
@@ -32,7 +32,7 @@ const EVM_ENFORCED_OPTIONS: OAppEnforcedOption[] = [
     {
         msgType: 1,
         optionType: ExecutorOptionType.LZ_RECEIVE,
-        gas: 80000,
+        gas: 60000,
         value: 0,
     },
 ]
@@ -47,27 +47,27 @@ const pathways: TwoWayConfig[] = [
         [1, 1], // [A to B confirmations, B to A confirmations]
         [EVM_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain B enforcedOptions, Chain A enforcedOptions
     ],
-    // [
-    //     optimismContract, // Chain A contract
-    //     arbitrumContract, // Chain C contract
-    //     [['LayerZero Labs'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
-    //     [1, 1], // [A to B confirmations, B to A confirmations]
-    //     [EVM_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain C enforcedOptions, Chain A enforcedOptions
-    // ],
-    // [
-    //     avalancheContract, // Chain B contract
-    //     arbitrumContract, // Chain C contract
-    //     [['LayerZero Labs'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
-    //     [1, 1], // [A to B confirmations, B to A confirmations]
-    //     [EVM_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain C enforcedOptions, Chain B enforcedOptions
-    // ],
+    [
+        bscContract, // Chain A contract
+        ethContract, // Chain B contract
+        [['LayerZero Labs'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
+        [1, 1], // [A to B confirmations, B to A confirmations]
+        [EVM_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain B enforcedOptions, Chain A enforcedOptions
+    ],
+    [
+        ethContract, // Chain A contract
+        baseContract, // Chain B contract
+        [['LayerZero Labs'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
+        [1, 1], // [A to B confirmations, B to A confirmations]
+        [EVM_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain B enforcedOptions, Chain A enforcedOptions
+    ],
 ]
 
 export default async function () {
     // Generate the connections config based on the pathways
     const connections = await generateConnectionsConfig(pathways)
     return {
-        contracts: [{ contract: bscContract }, { contract: baseContract }],
+        contracts: [{ contract: bscContract }, { contract: baseContract }, { contract: ethContract }],
         connections,
     }
 }

@@ -97,7 +97,7 @@ task('lz:oft:send', 'Send tokens cross-chain using LayerZero technology')
 
         const decimals = await oft.decimals()
         const amount = hre.ethers.utils.parseUnits(taskArgs.amount, decimals)
-        const options = Options.newOptions().addExecutorLzReceiveOption(200000, 0).toHex().toString()
+        const options = Options.newOptions().addExecutorLzReceiveOption(65000, 0).toHex().toString()
         const recipientAddressBytes32 = hre.ethers.utils.hexZeroPad(recipientB, 32)
 
         // Estimate the fee
@@ -127,24 +127,25 @@ task('lz:oft:send', 'Send tokens cross-chain using LayerZero technology')
             // Prepare send parameters
             const sendParam = [eidB, recipientAddressBytes32, amount, amount.mul(98).div(100), options, '0x', '0x']
             const feeParam = [overkillNativeFee, 0]
+            console.log(sendParam)
 
             // Sending the tokens with increased gas price
-            console.log(`Sending ${taskArgs.amount} token(s) from network ${taskArgs.networkA} to network ${taskArgs.networkB}`)
-            const tx = await oft.send(sendParam, feeParam, wallet.address, {
-                value: overkillNativeFee,
-                gasPrice: gasPrice,
-                nonce,
-                gasLimit: hre.ethers.utils.hexlify(7000000),
-            })
-            console.log('Transaction hash:', tx.hash)
-            await tx.wait()
-            console.log(
-                `Tokens sent successfully to the recipient on the destination chain. View on LayerZero Scan: https://layerzeroscan.com/tx/${tx.hash}`
-            )
+            // console.log(`Sending ${taskArgs.amount} token(s) from network ${taskArgs.networkA} to network ${taskArgs.networkB}`)
+            // const tx = await oft.send(sendParam, feeParam, wallet.address, {
+            //     value: overkillNativeFee,
+            //     gasPrice: gasPrice,
+            //     nonce,
+            //     gasLimit: hre.ethers.utils.hexlify(7000000),
+            // })
+            // console.log('Transaction hash:', tx.hash)
+            // await tx.wait()
+            // console.log(
+            //     `Tokens sent successfully to the recipient on the destination chain. View on LayerZero Scan: https://layerzeroscan.com/tx/${tx.hash}`
+            // )
         } catch (error) {
             console.error('Error during quoteSend or send operation:', error)
-            if (error?.data) {
-                console.error("Reverted with data:", error.data)
-            }
+            // if (error?.data) {
+            //     console.error("Reverted with data:", error.data)
+            // }
         }
     })

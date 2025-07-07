@@ -57,21 +57,21 @@ const config: HardhatUserConfig = {
             url: 'https://base-sepolia.drpc.org',
             accounts,
         },
-        // 'optimism-testnet': {
-        //     eid: EndpointId.OPTSEP_V2_TESTNET,
-        //     url: process.env.RPC_URL_OP_SEPOLIA || 'https://optimism-sepolia.gateway.tenderly.co',
-        //     accounts,
-        // },
-        // 'avalanche-testnet': {
-        //     eid: EndpointId.AVALANCHE_V2_TESTNET,
-        //     url: process.env.RPC_URL_FUJI || 'https://avalanche-fuji.drpc.org',
-        //     accounts,
-        // },
-        // 'arbitrum-testnet': {
-        //     eid: EndpointId.ARBSEP_V2_TESTNET,
-        //     url: process.env.RPC_URL_ARB_SEPOLIA || 'https://arbitrum-sepolia.gateway.tenderly.co',
-        //     accounts,
-        // },
+        'bsc-mainnet': {
+            eid: EndpointId.BSC_V2_MAINNET,
+            url: 'https://bsc.meowrpc.com',
+            accounts,
+        },
+        'base-mainnet': {
+            eid: EndpointId.BASE_V2_MAINNET,
+            url: 'https://base.drpc.org',
+            accounts,
+        },
+        'ethereum-mainnet': {
+            eid: EndpointId.ETHEREUM_V2_MAINNET,
+            url: 'https://eth.drpc.org',
+            accounts,
+        },
         hardhat: {
             // Need this for testing because TestHelperOz5.sol is exceeding the compiled contract size limit
             allowUnlimitedContractSize: true,
