@@ -22,10 +22,10 @@ const baseContract: OmniPointHardhat = {
     contractName: 'AspToken',
 }
 
-// const solanaContract: OmniPointHardhat = {
-//     eid: EndpointId.SOLANA_V2_TESTNET,
-//     address: getOftStoreAddress(EndpointId.SOLANA_V2_TESTNET),
-// }
+const solanaContract: OmniPointHardhat = {
+    eid: EndpointId.SOLANA_V2_MAINNET,
+    address: getOftStoreAddress(EndpointId.SOLANA_V2_MAINNET),
+}
 
 // To connect all the above chains to each other, we need the following pathways:
 // Optimism <-> Avalanche
@@ -59,23 +59,45 @@ const pathways: TwoWayConfig[] = [
     [
         bscContract, // Chain A contract
         baseContract, // Chain B contract
-        [['LayerZero Labs'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
-        [1, 1], // [A to B confirmations, B to A confirmations]
+        [['LayerZero Labs', 'Google'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
+        [15, 15], // [A to B confirmations, B to A confirmations]
         [EVM_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain B enforcedOptions, Chain A enforcedOptions
     ],
     [
         bscContract, // Chain A contract
         ethContract, // Chain B contract
-        [['LayerZero Labs'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
-        [1, 1], // [A to B confirmations, B to A confirmations]
+        [['LayerZero Labs', 'Google'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
+        [15, 15], // [A to B confirmations, B to A confirmations]
         [EVM_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain B enforcedOptions, Chain A enforcedOptions
     ],
     [
         ethContract, // Chain A contract
         baseContract, // Chain B contract
-        [['LayerZero Labs'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
-        [1, 1], // [A to B confirmations, B to A confirmations]
+        [['LayerZero Labs', 'Google'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
+        [15, 15], // [A to B confirmations, B to A confirmations]
         [EVM_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain B enforcedOptions, Chain A enforcedOptions
+    ],
+    [
+        bscContract, // Chain A contract
+        solanaContract, // Chain D contract
+        [['LayerZero Labs', 'Google'], []], // [ requiredDVN[], [ optionalDVN[], threshold ] ]
+        [32, 32], // [A to D confirmations, D to A confirmations]
+        [SOLANA_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS], // Chain D enforcedOptions, Chain A enforcedOptions
+    ],
+    [
+        baseContract,
+        solanaContract,
+        [['LayerZero Labs', 'Google'], []],
+        [32, 32],
+        [SOLANA_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS],
+
+    ],
+    [
+        ethContract,
+        solanaContract,
+        [['LayerZero Labs', 'Google'], []],
+        [32, 32],
+        [SOLANA_ENFORCED_OPTIONS, EVM_ENFORCED_OPTIONS],
     ],
 ]
 
@@ -83,7 +105,7 @@ export default async function () {
     // Generate the connections config based on the pathways
     const connections = await generateConnectionsConfig(pathways)
     return {
-        contracts: [{ contract: bscContract }, { contract: baseContract }, { contract: ethContract }],
+        contracts: [{ contract: bscContract }, { contract: baseContract }, { contract: ethContract }, { contract: solanaContract }],
         connections,
     }
 }
