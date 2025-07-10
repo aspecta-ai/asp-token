@@ -1,5 +1,5 @@
+import 'dotenv/config';
 import * as fs from "fs";
-import * as path from "path";
 import { createUmi } from '@metaplex-foundation/umi-bundle-defaults'
 import { createSignerFromKeypair, signerIdentity } from '@metaplex-foundation/umi'
 import { publicKey, unwrapOptionRecursively } from '@metaplex-foundation/umi'
@@ -15,7 +15,7 @@ const umi = createUmi(process.env.RPC_URL_SOLANA).use(mplTokenMetadata())
 // Use fs to navigate the filesystem till you reach
 // the wallet you wish to use via relative pathing.
 const walletFile = fs.readFileSync('./deployer.json', 'utf-8');
-// console.log(walletFile);
+console.log(walletFile);
 
 // Usually Keypairs are saved as Uint8Array, so you  
 // need to transform it into a usable keypair.  
@@ -31,8 +31,8 @@ console.log(signer);
 // Tell Umi to use the new signer.
 umi.use(signerIdentity(signer));
 
-// The Mint ID from OFT_ID in .env
-const mintId = publicKey(process.env.OFT_ID);
+// The Mint ID from MINT_ID in .env
+const mintId = publicKey(process.env.MINT_ID);
 console.log(mintId);
 
 const data = {
