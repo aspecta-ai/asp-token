@@ -44,7 +44,7 @@ interface Args {
 /**
  * We extend the default wiring task to add functionality required by Solana
  */
-task('lz:oapp:wire-sol') // Caution: Solana-specific wiring task
+task(TASK_LZ_OAPP_WIRE) // Caution: Solana-specific wiring task
     .addParam('multisigKey', 'The MultiSig key', undefined, publicKeyType, true)
     // We use this argument to get around the fact that we want to both override the task action for the wiring task
     // and wrap this task with custom configurators

@@ -1,6 +1,6 @@
 {
   "name": "@layerzerolabs/oft-example",
-  "version": "0.5.9",
+  "version": "0.11.1",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -19,7 +19,8 @@
     "test": "$npm_execpath run test:forge && $npm_execpath run test:hardhat",
     "test:anchor": "anchor test",
     "test:forge": "forge test",
-    "test:hardhat": "hardhat test"
+    "test:hardhat": "hardhat test",
+    "config-metadata": "node scripts/mplMetadataConfig.js"
   },
   "resolutions": {
     "@solana/web3.js": "^1.98.0",
