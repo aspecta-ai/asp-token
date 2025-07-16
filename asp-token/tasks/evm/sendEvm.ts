@@ -44,7 +44,7 @@ export async function sendEvm(
         )
         throw error
     }
-    const signer = await srcEidHre.ethers.getNamedSigner('deployer')
+    const signer = (await srcEidHre.ethers.getSigners())[0]
 
     // 1️⃣ resolve the OFT wrapper address
     let wrapperAddress: string
@@ -112,6 +112,7 @@ export async function sendEvm(
     logger.info('Sending the transaction...')
     let tx: ContractTransaction
     try {
+        logger.info(`Costing ${msgFee.nativeFee.toString()} native fee`)
         tx = await oft.send(sendParam, msgFee, signer.address, {
             value: msgFee.nativeFee,
         })

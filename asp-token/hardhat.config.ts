@@ -74,7 +74,7 @@ const config: HardhatUserConfig = {
         },
         'ethereum-mainnet': {
             eid: EndpointId.ETHEREUM_V2_MAINNET,
-            url: 'https://eth.drpc.org',
+            url: 'https://eth-mainnet.public.blastapi.io',
             accounts,
         },
         hardhat: {
